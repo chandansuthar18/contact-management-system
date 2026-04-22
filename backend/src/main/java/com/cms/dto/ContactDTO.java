@@ -1,0 +1,30 @@
+package com.cms.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Full contact response (used in list and detail)
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public
+class ContactDTO {
+    public Long id;
+    public String firstName;
+    public String lastName;
+    public String title;
+    public List<EmailEntryDTO> emails;
+    public List<PhoneEntryDTO> phones;
+    public LocalDateTime createdAt;
+    public LocalDateTime updatedAt;
+}

@@ -1,0 +1,462 @@
+# ============================================================
+#  CONTACT MANAGEMENT SYSTEM
+#  Complete Step-by-Step Setup & Run Guide
+# ============================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 1 — TOOLS TO INSTALL (Do this first, in order)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 1 ── Install JDK 17
+   URL:     https://adoptium.net/temurin/releases/?version=17
+   Choose:  Windows x64 Installer (.msi)
+   Install: Run the installer, check "Set JAVA_HOME"
+   Verify:  Open CMD → java -version
+            Expected: openjdk version "17.x.x"
+
+ STEP 2 ── Install Maven 3.9
+   URL:     https://maven.apache.org/download.cgi
+   Choose:  apache-maven-3.9.x-bin.zip
+   Install:
+     1. Extract to C:\Program Files\Maven
+     2. Add to PATH: C:\Program Files\Maven\bin
+     3. Add MAVEN_HOME: C:\Program Files\Maven
+   Verify:  mvn -version
+            Expected: Apache Maven 3.9.x
+
+ STEP 3 ── Install Node.js 20 LTS
+   URL:     https://nodejs.org/en/download
+   Choose:  Windows Installer (.msi) LTS version
+   Install: Run the installer (keep all defaults)
+   Verify:  node -v     → v20.x.x
+            npm  -v     → 10.x.x
+
+ STEP 4 ── Install SQL Server 2022 Developer (free)
+   URL:     https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+   Choose:  Developer edition (free for dev/test)
+   Install: Keep all defaults, note your SA password
+   Also install: SQL Server Management Studio (SSMS)
+     URL: https://aka.ms/ssmsfullsetup
+
+ STEP 5 ── Install Git
+   URL:     https://git-scm.com/download/win
+   Install: Keep all defaults
+   Verify:  git --version → git version 2.x.x
+
+ STEP 6 ── Install IntelliJ IDEA Community (free)
+   URL:     https://www.jetbrains.com/idea/download
+   Plugins to install after launch:
+     File → Settings → Plugins → search and install:
+       • Lombok
+       • SonarLint
+
+ STEP 7 ── Install VS Code
+   URL:     https://code.visualstudio.com
+   Extensions to install (Ctrl+Shift+X):
+     • ES7+ React/Redux/React-Native Snippets
+     • Prettier - Code formatter
+     • ESLint
+
+ STEP 8 ── Download SonarQube Community Edition
+   URL:     https://www.sonarqube.org/downloads/
+   Choose:  Community Edition zip
+   Extract: to C:\SonarQube\
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 2 — DATABASE SETUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 9 ── Create the database
+   1. Open SQL Server Management Studio (SSMS)
+   2. Connect to: localhost  (Windows Authentication)
+   3. Click: New Query
+   4. Open the file: database/schema.sql
+   5. Paste the contents into the query window
+   6. Press F5 to run
+   7. You should see: "ContactDB schema created successfully!"
+   8. Expand: Databases → ContactDB → Tables
+      You should see: users, contacts, contact_emails, contact_phones
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 3 — BACKEND SETUP (Spring Boot)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 10 ── Place files in the correct folder structure
+
+   Your backend folder must look like this:
+   backend/
+   ├── pom.xml
+   └── src/
+       ├── main/
+       │   ├── java/com/cms/
+       │   │   ├── ContactManagementApplication.java
+       │   │   ├── config/
+       │   │   │   ├── JwtUtil.java
+       │   │   │   ├── JwtAuthFilter.java
+       │   │   │   └── SecurityConfig.java
+       │   │   ├── controller/
+       │   │   │   ├── AuthController.java
+       │   │   │   ├── ContactController.java
+       │   │   │   └── UserController.java
+       │   │   ├── dto/
+       │   │   │   └── Dtos.java
+       │   │   ├── entity/
+       │   │   │   ├── User.java
+       │   │   │   ├── Contact.java
+       │   │   │   ├── ContactEmail.java
+       │   │   │   └── ContactPhone.java
+       │   │   ├── exception/
+       │   │   │   ├── Exceptions.java
+       │   │   │   └── GlobalExceptionHandler.java
+       │   │   ├── repository/
+       │   │   │   ├── UserRepository.java
+       │   │   │   └── ContactRepository.java
+       │   │   └── service/
+       │   │       ├── AuthService.java
+       │   │       ├── ContactService.java
+       │   │       ├── CustomUserDetailsService.java
+       │   │       └── UserService.java
+       │   └── resources/
+       │       ├── application.properties
+       │       └── logback-spring.xml
+       └── test/java/com/cms/
+           ├── controller/
+           │   └── AuthControllerTest.java
+           └── service/
+               ├── AuthServiceTest.java
+               └── ContactServiceTest.java
+
+ STEP 11 ── Configure the database password
+
+   Open:  backend/src/main/resources/application.properties
+   Edit these lines with YOUR SQL Server details:
+
+     spring.datasource.url=jdbc:sqlserver://localhost:1433;
+         databaseName=ContactDB;encrypt=true;trustServerCertificate=true
+     spring.datasource.username=sa
+     spring.datasource.password=YOUR_ACTUAL_SQL_SERVER_PASSWORD
+
+   IMPORTANT: Replace "YourStrongPassword123!" with your real password.
+
+ STEP 12 ── Open project in IntelliJ IDEA
+
+   1. Launch IntelliJ IDEA
+   2. File → Open → select the /backend folder
+   3. Click OK → Trust Project
+   4. Wait for Maven to download dependencies (watch the bottom progress bar)
+      This may take 3–5 minutes on first run.
+   5. You should see NO red errors in pom.xml when done.
+
+ STEP 13 ── Enable Lombok annotation processing
+
+   1. File → Settings → Build,Execution,Deployment → Compiler → Annotation Processors
+   2. Check: "Enable annotation processing"
+   3. Click OK
+
+ STEP 14 ── Run the Spring Boot application
+
+   METHOD A (IntelliJ):
+     1. Open: ContactManagementApplication.java
+     2. Click the green ▶ button next to the main() method
+     3. Or press: Shift+F10
+
+   METHOD B (Terminal):
+     cd backend
+     mvn spring-boot:run
+
+   SUCCESS output (look for these lines):
+     ═══════════════════════════════════════
+       Contact Management System Started
+       API:  http://localhost:8080/api/v1
+     ═══════════════════════════════════════
+
+ STEP 15 ── Test the API is running
+
+   Open your browser or Postman:
+   GET  http://localhost:8080/api/v1/auth/login
+   Should return 405 (Method Not Allowed) — that means it's running!
+
+   Test registration:
+   POST http://localhost:8080/api/v1/auth/register
+   Headers: Content-Type: application/json
+   Body:
+   {
+     "firstName": "Test",
+     "lastName": "User",
+     "email": "test@example.com",
+     "password": "password123"
+   }
+   Expected: 201 Created with token in response.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 4 — FRONTEND SETUP (React)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 16 ── Place React files in the correct structure
+
+   frontend/
+   ├── index.html
+   ├── package.json
+   ├── vite.config.js
+   ├── sonar-project.properties
+   └── src/
+       ├── main.jsx
+       ├── App.jsx
+       ├── api/
+       │   ├── axiosInstance.js
+       │   ├── authApi.js
+       │   ├── contactsApi.js
+       │   └── userApi.js
+       ├── components/
+       │   ├── ContactForm.jsx
+       │   ├── Layout.jsx
+       │   ├── Modal.jsx
+       │   ├── Pagination.jsx
+       │   └── ProtectedRoute.jsx
+       ├── context/
+       │   └── AuthContext.jsx
+       └── pages/
+           ├── LoginPage.jsx
+           ├── RegisterPage.jsx
+           ├── ContactsPage.jsx
+           └── ProfilePage.jsx
+
+ STEP 17 ── Install dependencies
+
+   Open a terminal in the /frontend folder:
+   cd frontend
+   npm install
+
+   This downloads all packages listed in package.json.
+   Takes 1–2 minutes. You'll see a node_modules/ folder appear.
+
+ STEP 18 ── Start the React development server
+
+   npm run dev
+
+   SUCCESS output:
+     VITE v5.x.x ready in xxx ms
+     ➜  Local:   http://localhost:5173/
+     ➜  Network: http://192.168.x.x:5173/
+
+   Open your browser at: http://localhost:5173
+
+ STEP 19 ── Test the full application
+
+   1. Go to:    http://localhost:5173/register
+   2. Fill in:  First name, email, password
+   3. Click:    Create Account
+   4. You are redirected to /contacts — success!
+   5. Try:      Create, edit, view, delete contacts
+   6. Go to:    /profile → Change Password
+   7. Click:    Sign Out → redirects to login
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 5 — RUNNING UNIT TESTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 20 ── Run all tests
+
+   cd backend
+   mvn test
+
+   You should see:
+     Tests run: XX, Failures: 0, Errors: 0, Skipped: 0
+
+ STEP 21 ── Run a specific test class
+
+   mvn test -Dtest=AuthServiceTest
+   mvn test -Dtest=ContactServiceTest
+   mvn test -Dtest=AuthControllerTest
+
+ STEP 22 ── View test results
+
+   After running, check:
+   backend/target/surefire-reports/
+   Open any .txt file to see pass/fail details.
+
+ STEP 23 ── Generate code coverage report (JaCoCo)
+
+   mvn test jacoco:report
+   Open: backend/target/site/jacoco/index.html
+   in your browser to see coverage percentages.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 6 — SONARQUBE SETUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 24 ── Start SonarQube server
+
+   cd C:\SonarQube\bin\windows-x86-64
+   StartSonar.bat
+
+   Wait 2 minutes, then open: http://localhost:9000
+   Default credentials: admin / admin
+   You'll be prompted to change the password.
+
+ STEP 25 ── Create a project
+
+   1. Click: Create Project → Manually
+   2. Project key:  contact-management-system
+   3. Display name: Contact Management System
+   4. Click: Set Up
+   5. Choose: Locally
+   6. Generate Token:  Name it "cms-token", click Generate
+   7. COPY the token — you'll need it in the next step.
+
+ STEP 26 ── Run backend analysis
+
+   cd backend
+   mvn clean verify sonar:sonar \
+     -Dsonar.projectKey=contact-management-system \
+     -Dsonar.host.url=http://localhost:9000 \
+     -Dsonar.login=YOUR_COPIED_TOKEN
+
+   (On Windows use ^ for line continuation or run as one line)
+
+ STEP 27 ── Run frontend analysis
+
+   1. Open: frontend/sonar-project.properties
+   2. Replace YOUR_SONAR_TOKEN_HERE with your token
+   3. Run:
+      cd frontend
+      npm install -g sonar-scanner   (first time only)
+      sonar-scanner
+
+ STEP 28 ── View results
+
+   Open: http://localhost:9000/dashboard?id=contact-management-system
+   You'll see: Bugs, Vulnerabilities, Code Smells, Coverage, Duplications
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 7 — GIT VERSION CONTROL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ STEP 29 ── Initialize Git repository
+
+   cd cms   (the root folder containing backend/ and frontend/)
+   git init
+   git add .
+   git commit -m "feat: initial project setup"
+
+ STEP 30 ── Create GitHub repository
+
+   1. Go to: https://github.com/new
+   2. Name:   contact-management-system
+   3. Keep:   Private
+   4. Do NOT check "Initialize with README" (we already have files)
+   5. Click:  Create Repository
+   6. Run the commands GitHub shows you:
+      git remote add origin https://github.com/YOURNAME/contact-management-system.git
+      git branch -M main
+      git push -u origin main
+
+ STEP 31 ── Use Git Flow branching for features
+
+   # Start a feature branch
+   git checkout -b feature/contact-search
+   # ... make your changes ...
+   git add .
+   git commit -m "feat(contacts): add search and filter"
+   git push origin feature/contact-search
+   # Open a Pull Request on GitHub into main
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 8 — API QUICK REFERENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ Base URL: http://localhost:8080/api/v1
+
+ ── Auth (public, no token needed) ──────────────────────────
+ POST  /auth/register         Register new user
+ POST  /auth/login            Login → returns token
+ PUT   /auth/change-password  Change password (🔒 needs token)
+
+ ── Users (🔒 requires Bearer token) ────────────────────────
+ GET   /users/me              Get my profile
+ PUT   /users/me              Update my profile
+
+ ── Contacts (🔒 requires Bearer token) ─────────────────────
+ GET   /contacts              List contacts
+                              ?page=0&size=10&search=john&sortBy=firstName
+ GET   /contacts/{id}         Get single contact
+ POST  /contacts              Create contact
+ PUT   /contacts/{id}         Update contact
+ DELETE /contacts/{id}        Delete contact
+
+ ── Example: Login request ──────────────────────────────────
+ POST http://localhost:8080/api/v1/auth/login
+ Content-Type: application/json
+
+ {
+   "identifier": "test@example.com",
+   "password": "password123"
+ }
+
+ Response:
+ {
+   "token": "eyJhbGciOiJIUzI1NiJ9...",
+   "tokenType": "Bearer",
+   "user": { "id": 1, "firstName": "Test", "email": "test@example.com" }
+ }
+
+ ── Example: Create contact (with token) ────────────────────
+ POST http://localhost:8080/api/v1/contacts
+ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+ Content-Type: application/json
+
+ {
+   "firstName": "John",
+   "lastName":  "Doe",
+   "title":     "Engineer",
+   "emails": [
+     { "label": "work",     "email": "john@corp.com" },
+     { "label": "personal", "email": "john@gmail.com" }
+   ],
+   "phones": [
+     { "label": "work", "phone": "+15550001" }
+   ]
+ }
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ Problem:  Cannot connect to SQL Server
+ Fix:      Open SQL Server Configuration Manager →
+           SQL Server Network Configuration →
+           Protocols for MSSQLSERVER →
+           Enable TCP/IP → Restart SQL Server service
+
+ Problem:  Port 8080 already in use
+ Fix:      Change server.port=8081 in application.properties
+           Update vite.config.js proxy target to :8081
+
+ Problem:  CORS error in browser console
+ Fix:      Verify cors.allowed-origins=http://localhost:5173
+           in application.properties
+
+ Problem:  401 Unauthorized on every request
+ Fix:      Token may have expired (24h). Log out and log in again.
+           Or check jwt.secret is the same across restarts.
+
+ Problem:  Lombok annotations not working (red errors in IDE)
+ Fix:      File → Settings → Annotation Processors → Enable ✓
+           Then: File → Invalidate Caches → Restart
+
+ Problem:  npm install fails
+ Fix:      Delete node_modules/ and package-lock.json
+           Run: npm cache clean --force
+           Run: npm install again
+
+ Problem:  SonarQube won't start
+ Fix:      Ensure Java 17 is on PATH (SonarQube requires Java 17+)
+           Check logs: C:\SonarQube\logs\sonar.log
