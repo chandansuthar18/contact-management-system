@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
   timeout: 10000,  // 10 second timeout
 })
 
-// ── REQUEST INTERCEPTOR ──────────────────────────────────────
+// ── REQUEST INTERCEPTOR ────────────────────────
 // Runs before every outgoing request.
 // Reads the JWT from localStorage and adds it to Authorization header.
 axiosInstance.interceptors.request.use(
