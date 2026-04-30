@@ -1,12 +1,6 @@
 // src/api/axiosInstance.js
 // ─────────────────────────────────────────────────────────────────────────────
-// Axios instance pre-configured for the CMS API.
-//
-// Features:
-//   - Base URL: /api/v1  (proxied to http://localhost:8080 via vite.config.js)
-//   - Request interceptor: automatically attaches JWT token to every request
-//   - Response interceptor: redirects to /login on 401 (token expired/invalid)
-// ─────────────────────────────────────────────────────────────────────────────
+
 import axios from 'axios'
 
 const axiosInstance = axios.create({
