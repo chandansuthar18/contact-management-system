@@ -2,8 +2,7 @@
 -- Contact Management System — SQL Server Database Schema
 -- Run this script in SQL Server Management Studio (SSMS)
 -- or Azure Data Studio BEFORE starting the Spring Boot app.
--- ============================================================
-
+-- ===============================================
 -- Step 1: Create the database
 CREATE DATABASE ContactDB;
 GO
