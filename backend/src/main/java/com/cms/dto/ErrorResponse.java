@@ -24,5 +24,6 @@ class ErrorResponse {
         this.code = code;
         this.message = message;
         this.timestamp = LocalDateTime.now();
+    
     }
 }
