@@ -24,7 +24,7 @@ import java.io.IOException;
  *   3. Load the user from the database
  *   4. Set the user in SecurityContext so Spring knows who's logged in
  *
- * This allows all @PreAuthorize and endpoint security to work automatically.
+ * This allows all @PreAuthorize and endpoint security to automatically.
  */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -47,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 String username = jwtUtil.extractUsername(token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                // Create an authenticated token and store in SecurityContext
+                // Create an authenticated token and store in Security Context
                 UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
