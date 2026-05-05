@@ -17,4 +17,5 @@ class AuthResponse {
     public String token;
     public String tokenType = "Bearer";
     public UserDTO user;
+    pub
 }
