@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Full contact response (used in list and detail)
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
