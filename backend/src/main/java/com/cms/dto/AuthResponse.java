@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Response body for login and register
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
