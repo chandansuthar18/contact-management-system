@@ -11,16 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * UserController — REST API for user profile management.
- *
- * Base path: /api/v1/users
- * All endpoints require a valid Bearer JWT token.
- *
- * Endpoints:
- *   GET  /users/me   → get logged-in user's profile
- *   PUT  /users/me   → update logged-in user's profile
- */
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -29,12 +19,7 @@ public class UserController {
 
     @Autowired private UserService userService;
 
-    /**
-     * GET /users/me
-     *
-     * Returns the current logged-in user's profile.
-     * The user is identified from the JWT token (no ID needed in URL).
-     */
+    
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getProfile(
             @AuthenticationPrincipal UserDetails userDetails) {
@@ -44,14 +29,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getCurrentUser(userId));
     }
 
-    /**
-     * PUT /users/me
-     *
-     * Updates the current user's profile fields.
-     * Only non-null fields in the request body are updated.
-     *
-     * Request body: { firstName?, lastName?, email?, phone? }
-     */
     @PutMapping("/me")
     public ResponseEntity<UserDTO> updateProfile(
             @Valid @RequestBody UpdateUserRequest request,
