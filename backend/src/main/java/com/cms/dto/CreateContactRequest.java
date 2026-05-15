@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-/**
- * Request body for POST /contacts (create)
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
