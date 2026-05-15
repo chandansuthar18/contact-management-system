@@ -1,6 +1,4 @@
-// src/components/Layout.jsx
-// Main application layout: top navigation bar + page content.
-// Used on all authenticated pages.
+
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Users, User, LogOut } from 'lucide-react'
