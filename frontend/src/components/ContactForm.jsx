@@ -1,6 +1,4 @@
-// src/components/ContactForm.jsx
-// Reusable form for both creating and editing a contact.
-// Uses React Hook Form + Zod for validation.
+
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
