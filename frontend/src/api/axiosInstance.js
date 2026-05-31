@@ -9,8 +9,6 @@ const axiosInstance = axios.create({
   },
   timeout: 10000,  // 10 second timeout
 })
-
-
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('cms_token')
