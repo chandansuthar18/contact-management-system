@@ -15,17 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * JwtAuthFilter — runs once per HTTP request before Spring Security.
- *
- * Steps:
- *   1. Read "Authorization" header → extract Bearer token
- *   2. Validate the token using JwtUtil
- *   3. Load the user from the database
- *   4. Set the user in SecurityContext so Spring knows who's logged in
- *
- * This allows all @PreAuthorize and endpoint security to automatically.
- */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
