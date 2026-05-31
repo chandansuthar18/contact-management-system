@@ -20,16 +20,7 @@ import org.springframework.web.cors.*;
 
 import java.util.Arrays;
 
-/**
- * SecurityConfig — configures Spring Security for the application.
- *
- * Key decisions:
- *   - JWT-based stateless authentication (no sessions)
- *   - Public endpoints: /auth/register, /auth/login
- *   - All other endpoints require a valid Bearer token
- *   - CORS configured to allow React frontend (localhost:5173)
- *   - BCrypt for password hashing (industry standard)
- */
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity   // enables @PreAuthorize on methods
