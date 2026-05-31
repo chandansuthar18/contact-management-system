@@ -10,17 +10,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
-/**
- * JwtUtil — Utility for creating, validating, and parsing JWT tokens.
- *
- * JWT (JSON Web Token) is a compact, URL-safe token format.
- * Structure: Header.Payload.Signature
- *
- * Flow is that
- *   Login → generate token → return to client
- *   Every request → client sends token in Authorization header
- *   JwtAuthFilter → validates token → extracts username
- */
+
 @Component
 public class JwtUtil {
 
