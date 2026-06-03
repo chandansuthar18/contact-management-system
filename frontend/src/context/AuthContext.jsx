@@ -1,21 +1,9 @@
-// src/context/AuthContext.jsx
-// ─────────────────────────────────────────────────────────────────────────────
-// AuthContext provides global authentication state to the entire React app.
-//
-// What it stores:
-//   - user: the logged-in user object (or null)
-//   - token: the JWT string (also in localStorage for persistence)
-//   - login / logout helpers
-//
-// Usage anywhere in the app:
-//   const { user, login, logout } = useAuth()
-// ─────────────────────────────────────────────────────────────────────────────
+
 import { createContext, useContext, useState, useCallback } from 'react'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  // Initialize from localStorage so user stays logged in on page refresh
   const [user,  setUser]  = useState(() => {
     try {
       const stored = localStorage.getItem('cms_user')
@@ -26,10 +14,7 @@ export function AuthProvider({ children }) {
   })
   const [token, setToken] = useState(() => localStorage.getItem('cms_token') || null)
 
-  /**
-   * Call after successful login or register.
-   * Saves token and user to state AND localStorage.
-   */
+ 
   const login = useCallback((authResponse) => {
     const { token: newToken, user: newUser } = authResponse
     setToken(newToken)
@@ -69,7 +54,6 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-/** Custom hook — use this instead of useContext(AuthContext) directly */
 export function useAuth() {
   const context = useContext(AuthContext)
   if (!context) {
