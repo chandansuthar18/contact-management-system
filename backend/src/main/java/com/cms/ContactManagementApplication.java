@@ -5,15 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Entry point for the Contact Management System Spring Boot application.
- *
- * STEP TO RUN:
- *   mvn spring-boot:run
- *   OR in IntelliJ: Right-click → Run 'ContactManagementApplication'
- *
- * API base URL: http://localhost:8080/api/v1
- */
+
 @SpringBootApplication
 public class ContactManagementApplication {
 
