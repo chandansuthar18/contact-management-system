@@ -3,10 +3,6 @@ package com.cms.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**
- * ContactEmail entity — maps to 'contact_emails' table.
- * label: work | personal | other
- */
 @Entity
 @Table(name = "contact_emails")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
