@@ -6,10 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**
- * UserRepository — Spring Data JPA repository for User entity.
- * Spring auto-generates SQL for all methods at runtime.
- */
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
