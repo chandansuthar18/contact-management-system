@@ -9,10 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Contact entity — maps to the 'contacts' table.
- * Belongs to a User. Has multiple emails and phones.
- */
 @Entity
 @Table(name = "contacts", indexes = {
     @Index(name = "idx_contact_user",      columnList = "user_id"),
