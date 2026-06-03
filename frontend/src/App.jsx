@@ -1,6 +1,4 @@
-// src/App.jsx
-// Root application component.
-// Sets up React Router routes and wraps everything in AuthProvider.
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
